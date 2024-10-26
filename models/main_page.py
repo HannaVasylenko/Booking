@@ -29,6 +29,7 @@ class MainPage:
         self.language_picker = page.locator("[data-testid='header-language-picker-trigger']")
         self.slinks_show_more_btn = page.locator("//div[@class='slinks']//span[text()='Show more']")
         self.list_popular_places = page.locator("//div[@id='mainIndexInterlinkingTab-1']//div[@class='b817090550 b232a3502b']")
+        self.language_tooltip_text = page.locator("//div[@id=':r6:']/div")
 
     async def select_countries_link(self):
         await self.countries_link.click()
@@ -73,10 +74,13 @@ class MainPage:
     async def select_language(self, language: str):
         await self.language_picker.click()
         await self.language_picker.click()
-        await self.page.locator(f"//div[@id='header_language_picker']//div[@data-testid='Suggested for you']//span[text()='{language}']").click()
+        await self.page.locator(f"//div[@data-testid='All languages']//span[text()='{language}']").click()
 
     async def click_slinks_show_more_btn(self):
         await self.slinks_show_more_btn.click()
 
     async def count_list_popular_places(self)-> int:
         return await self.list_popular_places.count()
+
+    async def show_language_tooltip(self):
+        await self.language_picker.hover()
