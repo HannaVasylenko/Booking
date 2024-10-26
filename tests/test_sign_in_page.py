@@ -5,7 +5,7 @@ from models.sign_in_page import SignInPage
 
 
 @pytest.mark.asyncio
-async def test_input_email(setup: Page) -> None:
+async def test_input_email_in_sign_in_page(setup: Page) -> None:
     main_page = MainPage(setup)
     await main_page.click_on_sign_in()
     sign_in_page = SignInPage(setup)

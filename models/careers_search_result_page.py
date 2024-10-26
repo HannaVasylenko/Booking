@@ -6,7 +6,6 @@ class CareersSearchPage:
         self.list_vacancies_in_search = page.locator("a.job-title-link span") # p.job-title span
         self.vacancy_title = page.locator(".header-section h1")
 
-
     async def select_vacancy(self, keyword: str, vacancy_name: str):
         await self.careers_field.fill(keyword)
         await self.page.get_by_role("option", name=vacancy_name, exact=True).click()

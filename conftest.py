@@ -2,6 +2,7 @@ import pytest
 from playwright.async_api import async_playwright, expect
 
 
+@pytest.mark.browser_context_args(timezone_id="America/New_York", locale="en-US")
 @pytest.fixture(scope="function")
 async def setup():
     async with async_playwright() as p:
@@ -15,5 +16,3 @@ async def setup():
             pass
         yield page
         await browser.close()
-
-#TODO add select language in setup

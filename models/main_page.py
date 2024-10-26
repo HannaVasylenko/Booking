@@ -1,6 +1,5 @@
 from datetime import datetime, date, timedelta
 
-
 class MainPage:
     def __init__(self, page):
         self.page = page
@@ -26,6 +25,10 @@ class MainPage:
         self.adults_add_btn = page.locator("input#group_adults ~ div>button~button")
         self.children_add_btn = page.locator("input#group_children ~ div>button~button")
         self.children_age_arrow_btn = page.locator("select[name='age']")
+        self.currency_picker = page.get_by_test_id("header-currency-picker-trigger")
+        self.language_picker = page.locator("[data-testid='header-language-picker-trigger']")
+        self.slinks_show_more_btn = page.locator("//div[@class='slinks']//span[text()='Show more']")
+        self.list_popular_places = page.locator("//div[@id='mainIndexInterlinkingTab-1']//div[@class='b817090550 b232a3502b']")
 
     async def select_countries_link(self):
         await self.countries_link.click()
@@ -36,9 +39,8 @@ class MainPage:
     async def select_careers_link(self):
         await self.careers_link.click()
 
-    @staticmethod
-    async def select_tab(tab_link):
-        await tab_link.click()
+    async def select_tab(self, tab_name: str):
+        await self.page.locator(f"#{tab_name}").click()
 
     async def input_place(self, place: str):
         await self.place_name.click()
@@ -63,3 +65,18 @@ class MainPage:
         await self.page.get_by_test_id("kids-ages-select").get_by_role("combobox").select_option("9")
         await self.page.locator("label").filter(has_text="Traveling with pets?").locator("span").first.click()
         await self.page.get_by_role("button", name="Done").click()
+
+    async def select_currency(self, currency: str):
+        await self.currency_picker.click()
+        await self.page.locator(f"//div[@id='header_currency_picker']//div[@data-testid='Suggested for you']//span[text()='{currency}']").click()
+
+    async def select_language(self, language: str):
+        await self.language_picker.click()
+        await self.language_picker.click()
+        await self.page.locator(f"//div[@id='header_language_picker']//div[@data-testid='Suggested for you']//span[text()='{language}']").click()
+
+    async def click_slinks_show_more_btn(self):
+        await self.slinks_show_more_btn.click()
+
+    async def count_list_popular_places(self)-> int:
+        return await self.list_popular_places.count()
