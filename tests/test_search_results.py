@@ -8,7 +8,7 @@ from models.search_result_page import SearchResultPage
 
 
 @pytest.mark.asyncio
-async def test_select_stays(setup: Page) -> None:
+async def test_select_stays_list_by_check_in_out_date(setup: Page) -> None:
     main_page = MainPage(setup)
     await main_page.input_place("poland")
     await main_page.select_nth_place_from_examples(0)
@@ -73,6 +73,21 @@ async def test_sticky_container_inner_appears(setup: Page) -> None:
     search_result_page = SearchResultPage(setup)
     await search_result_page.hover_load_more_results_btn()
     await expect(setup.locator("[data-testid='sticky-container-inner']")).to_be_visible()
+
+
+@pytest.mark.asyncio
+async def test_select_stays_from_search_result_list(setup: Page) -> None:
+    main_page = MainPage(setup)
+    await main_page.input_place("poland")
+    await main_page.select_nth_place_from_examples(0)
+    await main_page.select_check_in_date()
+    await main_page.select_check_out_date()
+    await main_page.submit_stays_search()
+    search_result_page = SearchResultPage(setup)
+    async with setup.expect_popup() as new_page_info:
+        await search_result_page.select_title_stays("Hotel Szafir")
+    new_page = await new_page_info.value
+    await expect(new_page.locator("#hp_hotel_name h2")).to_have_text("Hotel Szafir")
 
 # TODO complete test_filters test
 # TODO edit expect 2 layout in test

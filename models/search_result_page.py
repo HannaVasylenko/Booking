@@ -22,7 +22,6 @@ class SearchResultPage:
         self.sticky_container_inner = page.locator("[data-testid='sticky-container-inner']")
         self.load_more_results_btn = page.locator("//span[text()='Load more results']")
 
-
     async def select_checkbox_property_type(self):
         if await self.checkbox_property_type_1.is_visible():
             await self.checkbox_property_type_1.click()
@@ -61,3 +60,6 @@ class SearchResultPage:
     async def hover_load_more_results_btn(self):
         await self.page.wait_for_load_state("networkidle")
         await self.page.evaluate("window.scrollBy(0,2 * document.body.scrollHeight / 3)")
+
+    async def select_title_stays(self, stays_name):
+        await self.page.locator(f"//div[@data-testid='property-card']//h3//div[text()='{stays_name}']").click()
