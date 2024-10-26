@@ -1,5 +1,6 @@
 from operator import contains
 
+import mouse
 import pytest
 from playwright.async_api import Page, expect
 from models.main_page import MainPage
@@ -28,7 +29,10 @@ async def test_filters(setup: Page) -> None:
     await main_page.select_check_out_date()
     await main_page.submit_stays_search()
     search_result_page = SearchResultPage(setup)
-    await search_result_page.select_checkbox()
+    await search_result_page.select_checkbox_property_type()
+    await expect(setup.locator("//input[@name='Hotels']/..")).to_be_visible()
+    await search_result_page.select_checkbox_property_rating("5 stars")
+    await expect(setup.locator("//input[@name='5 stars']/..")).to_be_visible()
 
 
 @pytest.mark.asyncio
@@ -56,6 +60,19 @@ async def test_layout_website(setup: Page) -> None:
         await expect(setup.locator("//label[text()='List']/..")).to_have_attribute("class", "--bui-segmented-control-active-scale-x: 44.275px; --bui-segmented-control-active-transform-x: 3px;")
     elif await search_result_page.list_layout3.is_visible():
         await expect(search_result_page.list_layout3).to_have_attribute("class", "a83ed08757 c21c56c305 bf0537ecb5 d691166b09 ab98298258 d8974fd49d bdad918c5d c3b4df07f9")
+
+
+@pytest.mark.asyncio
+async def test_sticky_container_inner_appears(setup: Page) -> None:
+    main_page = MainPage(setup)
+    await main_page.input_place("poland")
+    await main_page.select_nth_place_from_examples(0)
+    await main_page.select_check_in_date()
+    await main_page.select_check_out_date()
+    await main_page.submit_stays_search()
+    search_result_page = SearchResultPage(setup)
+    await search_result_page.hover_load_more_results_btn()
+    await expect(setup.locator("[data-testid='sticky-container-inner']")).to_be_visible()
 
 # TODO complete test_filters test
 # TODO edit expect 2 layout in test

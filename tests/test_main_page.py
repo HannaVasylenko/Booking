@@ -40,4 +40,3 @@ async def test_add_list_popular_places_after_click_on(setup: Page) -> None:
     await main_page.click_slinks_show_more_btn()
     list_of_places_after__click_on_show_more_btn = await main_page.count_list_popular_places()
     assert list_of_places_after__click_on_show_more_btn == default_list_of_places + 25, "The user did not click on the Show more button"
-
